@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Serves site/ at http://localhost:5173 (PORT overrides).
+# Uses bun (live reload); falls back to python3's http.server (no live reload).
+set -euo pipefail
+
+cd "$(dirname "$0")"
+port="${PORT:-5173}"
+
+if command -v bun >/dev/null 2>&1; then
+  exec bun serve.ts
+fi
+
+if command -v python3 >/dev/null 2>&1; then
+  echo "bun not found: serving with python3 at http://localhost:${port}/ (no live reload, refresh by hand)."
+  exec python3 -m http.server "$port" --bind 127.0.0.1 --directory site
+fi
+
+echo "serve: install bun (https://bun.sh) or python3 first." >&2
+exit 1
