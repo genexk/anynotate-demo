@@ -2,3 +2,4 @@
 .serve.log
 .DS_Store
 node_modules/
+.serve.err.log
